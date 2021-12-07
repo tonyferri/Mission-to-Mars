@@ -19,7 +19,8 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
-        "last_modified": dt.datetime.now()
+        "last_modified": dt.datetime.now(),
+        "hemisphere_images": hemisphere_images(browser)
     }
 
     # Stop webdriver and return data
@@ -101,3 +102,95 @@ if __name__ == "__main__":
 
     # If running as script, print scraped data
     print(scrape_all())
+
+def hemisphere_images(browser):
+    url = 'https://marshemispheres.com/'
+    browser.visit(url)
+
+    # hemisphere_image_urls = []
+
+    # 3. Write code to retrieve the image urls and titles for each hemisphere.
+    # Find and click the full image button
+    full_image_cerberus = browser.find_by_tag('h3')[0]
+    cerberus_title = full_image_cerberus.text
+    full_image_cerberus.click()
+
+    # Parse the resulting html with soup
+    html = browser.html
+    img_soup = soup(html, 'html.parser')
+
+    # Find the relative image url
+    cerberus_list = img_soup.find('li')
+    img_url_rel_cerberus = cerberus_list.a['href']
+
+    # Use the base URL to create an absolute URL
+    img_url_cerberus = f'https://marshemispheres.com/{img_url_rel_cerberus}'
+
+    browser.back()
+
+    # Find and click the full image button
+    full_image_schiaparelli = browser.find_by_tag('h3')[1]
+    schiaparelli_title = full_image_schiaparelli.text
+    full_image_schiaparelli.click()
+
+    # Parse the resulting html with soup
+    html = browser.html
+    img_soup = soup(html, 'html.parser')
+
+    # Find the relative image url
+    schiaparelli_list = img_soup.find('li')
+    img_url_rel_schiaparelli = schiaparelli_list.a['href']
+
+    # Use the base URL to create an absolute URL
+    img_url_schiaparelli = f'https://marshemispheres.com/{img_url_rel_schiaparelli}'
+
+    browser.back()
+
+    # Find and click the full image button
+    full_image_syrtis = browser.find_by_tag('h3')[2]
+    syrtis_title = full_image_syrtis.text
+    full_image_syrtis.click()
+
+    # Parse the resulting html with soup
+    html = browser.html
+    img_soup = soup(html, 'html.parser')
+
+    # Find the relative image url
+    syrtis_list = img_soup.find('li')
+    img_url_rel_syrtis = syrtis_list.a['href']
+
+    # Use the base URL to create an absolute URL
+    img_url_syrtis = f'https://marshemispheres.com/{img_url_rel_syrtis}'
+    img_url_syrtis
+
+    browser.back()
+
+    # Find and click the full image button
+    full_image_valles = browser.find_by_tag('h3')[3]
+    valles_title = full_image_valles.text
+    full_image_valles.click()
+
+    # Parse the resulting html with soup
+    html = browser.html
+    img_soup = soup(html, 'html.parser')
+
+    # Find the relative image url
+    valles_list = img_soup.find('li')
+    img_url_rel_valles = valles_list.a['href']
+
+    # Use the base URL to create an absolute URL
+    img_url_valles = f'https://marshemispheres.com/{img_url_rel_valles}'
+    img_url_valles
+
+    browser.back()
+
+    hemispheres = [
+    {"img_url": img_url_cerberus, "title": cerberus_title},
+    {"img_url": img_url_schiaparelli, "title": schiaparelli_title},
+    {"img_url": img_url_syrtis, "title": syrtis_title},
+    {"img_url": img_url_valles, "title": valles_title}]
+
+    for h in hemispheres:
+        print(h)
+
+    return hemispheres
